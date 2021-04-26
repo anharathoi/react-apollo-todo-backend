@@ -1,31 +1,26 @@
-const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
-
+const express = require("express");
+const { ApolloServer, gql } = require("apollo-server-express");
 
 // Mock in memory data
 const itemList = [
-  {
-    id: 1,
-    title: "Retro",
-    done: false
-  },
+  { id: 1, title: "Retro", done: false },
   {
     id: 2,
     title: "Planning",
-    done: false
+    done: false,
   },
   {
     id: 3,
     title: "Ship PR",
-    done: true
+    done: true,
   },
   {
     id: 4,
     title: "Fix code",
-    done: true
+    done: true,
   },
+];
 
-]
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Item {
@@ -35,6 +30,7 @@ const typeDefs = gql`
   }
   type Query {
     getAllItems: [Item]
+    getItem(id: Int): Item
   }
 `;
 
@@ -42,6 +38,10 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     getAllItems: () => itemList,
+    getItem: (_: any, args: { id: number }) =>
+      itemList.find((item) => {
+        return item.id === args.id;
+      }),
   },
 };
 
@@ -51,5 +51,7 @@ const app = express();
 server.applyMiddleware({ app });
 
 app.listen({ port: 4000 }, () =>
-  console.log(`🚀 Again n again Server ready at http://localhost:4000${server.graphqlPath}`)
+  console.log(
+    `🚀 Again n again Server ready at http://localhost:4000${server.graphqlPath}`
+  )
 );
