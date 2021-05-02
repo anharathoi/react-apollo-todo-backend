@@ -40,6 +40,8 @@ const typeDefs = gql`
 
   type Mutation {
     addItem(id: Int, title: String, done: Boolean): Item
+    deleteItem(id: Int): Item
+    updateItem(id: Int, title: String, done: Boolean): Item
   }
 `;
 
@@ -52,9 +54,12 @@ const resolvers = {
       await dataSources.toDoApi.getItem(id),
   },
   Mutation: {
-    addItem: async (_source, { id, title, done }, { dataSources }) => 
-      await dataSources.toDoApi.addItem(id, title, done)
-    
+    addItem: async (_source, { id, title, done }, { dataSources }) =>
+      await dataSources.toDoApi.addItem(id, title, done),
+    deleteItem: async (_source, { id }, { dataSources }) =>
+      await dataSources.toDoApi.deleteItem(id),
+    updateItem: async (_source, { id, title, done }, { dataSources }) =>
+      await dataSources.toDoApi.updateItem(id, title, done),
   },
 };
 

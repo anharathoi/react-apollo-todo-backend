@@ -21,6 +21,17 @@ export class ToDoAPI extends RESTDataSource {
       done: done,
     });
   }
+
+  async deleteItem(id: number) {
+    return await this.delete(`items/${id}`);
+  }
+
+  async updateItem(id, title, done) {
+    return await this.put(`items/${id}`, {
+      title: title,
+      done: done,
+    });
+  }
 }
 
 const api = new ToDoAPI();
