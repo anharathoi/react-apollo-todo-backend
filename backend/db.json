@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "title": "Retro",
+      "done": false
+    },
+    {
+      "id": 2,
+      "title": "Planning",
+      "done": false
+    },
+    {
+      "id": 3,
+      "title": "Ship PR",
+      "done": true
+    },
+    {
+      "id": 4,
+      "title": "Fix code",
+      "done": true
+    }
+  ]
+}

@@ -1,5 +1,10 @@
-const express = require("express");
-const { ApolloServer, gql } = require("apollo-server-express");
+import { ToDoAPI } from "./ToDoAPI";
+import * as express from "express";
+import { ApolloServer, gql } from "apollo-server-express";
+
+// Instantiate api
+// const toDoApi = new ToDoAPI();
+// Turns out you can't do it like this, see below how this is used instead
 
 // Mock in memory data
 const itemList = [
@@ -32,26 +37,38 @@ const typeDefs = gql`
     getAllItems: [Item]
     getItem(id: Int): Item
   }
+
+  type Mutation {
+    addItem(id: Int, title: String, done: Boolean): Item
+  }
 `;
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    getAllItems: () => itemList,
-    getItem: (_: any, args: { id: number }) =>
-      itemList.find((item) => {
-        return item.id === args.id;
-      }),
+    getAllItems: async (_source, { id }, { dataSources }) =>
+      await dataSources.toDoApi.getAllItems(),
+    getItem: async (_source, { id }, { dataSources }) =>
+      await dataSources.toDoApi.getItem(id),
+  },
+  Mutation: {
+    addItem: async (_source, { id, title, done }, { dataSources }) => 
+      await dataSources.toDoApi.addItem(id, title, done)
+    
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  dataSources: () => {
+    return { toDoApi: new ToDoAPI() };
+  },
+});
 
 const app = express();
 server.applyMiddleware({ app });
 
 app.listen({ port: 4000 }, () =>
-  console.log(
-    `🚀 Again n again Server ready at http://localhost:4000${server.graphqlPath}`
-  )
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 );
