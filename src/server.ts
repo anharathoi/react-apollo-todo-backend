@@ -6,26 +6,6 @@ import { ApolloServer, gql } from "apollo-server-express";
 // const toDoApi = new ToDoAPI();
 // Turns out you can't do it like this, see below how this is used instead
 
-// Mock in memory data
-const itemList = [
-  { id: 1, title: "Retro", done: false },
-  {
-    id: 2,
-    title: "Planning",
-    done: false,
-  },
-  {
-    id: 3,
-    title: "Ship PR",
-    done: true,
-  },
-  {
-    id: 4,
-    title: "Fix code",
-    done: true,
-  },
-];
-
 // Construct a schema, using GraphQL schema language
 const typeDefs = gql`
   type Item {
@@ -33,6 +13,7 @@ const typeDefs = gql`
     title: String
     done: Boolean
   }
+
   type Query {
     getAllItems: [Item]
     getItem(id: Int): Item
@@ -48,7 +29,7 @@ const typeDefs = gql`
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    getAllItems: async (_source, { id }, { dataSources }) =>
+    getAllItems: async (_source, {  }, { dataSources }) => 
       await dataSources.toDoApi.getAllItems(),
     getItem: async (_source, { id }, { dataSources }) =>
       await dataSources.toDoApi.getItem(id),

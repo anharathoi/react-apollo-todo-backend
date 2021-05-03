@@ -1,11 +1,6 @@
 {
   "items": [
     {
-      "id": 1,
-      "title": "Retro",
-      "done": false
-    },
-    {
       "id": 2,
       "title": "Planning",
       "done": false
@@ -21,9 +16,14 @@
       "done": true
     },
     {
-      "title": "change name",
+      "title": "Preso",
       "done": true,
       "id": 5
+    },
+    {
+      "title": "Retro",
+      "done": true,
+      "id": 6
     }
   ]
 }
